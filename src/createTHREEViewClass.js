@@ -47,6 +47,16 @@ export default (THREE) => class THREEView extends React.Component {
 
 
   _onContextCreate = (gl) => {
+    let originalGetParameter = gl.getParameter;
+
+    gl.getParameter = function(name) {
+      if (name === gl.VERSION) {
+        return 'WebGL 2.0';
+      } else {
+        return originalGetParameter(name);
+      }
+    }
+
     const renderer = new THREE.WebGLRenderer({
       canvas: {
         width: gl.drawingBufferWidth,
